@@ -1,51 +1,66 @@
 package com.example.lifetracker
 
+import adapter.HabitAdapter
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lifetracker.databinding.ActivityMainBinding
 import model.Habit
+import viewmodel.HabitViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val habitList = mutableListOf<Habit>()
-    private lateinit var adapter: ArrayAdapter<String>
-    private var idCounter = 0
+    private lateinit var habitAdapter: HabitAdapter
+
+    // ViewModel survives rotation — notice how clean this is
+    private val viewModel: HabitViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         // 1. Initialize it FIRST
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setContentView(R.layout.activity_main)
+
+        setupRecyclerView()
+        observeHabits()
+        setupClickListeners()
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // ArrayAdapter just for now — you'll replace this in Phase 2
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf())
-        binding.lvHabits.adapter = adapter
+    }
+    private fun setupRecyclerView() {
+        habitAdapter = HabitAdapter { position ->
+            viewModel.toggleHabit(position)
+        }
+        binding.rvHabits.apply {
+            adapter = habitAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+    }
 
+    private fun observeHabits() {
+        // This re-runs every time LiveData changes (add, toggle, rotation)
+        viewModel.habits.observe(this) { habits ->
+            habitAdapter.updateHabits(habits)
+        }
+    }
+
+    private fun setupClickListeners() {
         binding.btnAdd.setOnClickListener {
             val name = binding.etHabitName.text.toString().trim()
             if (name.isNotEmpty()) {
-                val habit = Habit(id = idCounter++, name = name)
-                habitList.add(habit)
-                adapter.add(habit.name)
-                adapter.notifyDataSetChanged()
+                viewModel.addHabit(name)
                 binding.etHabitName.text.clear()
             }
-        }
-
-        binding.lvHabits.setOnItemClickListener { _, _, position, _ ->
-            habitList[position].isCompleted = !habitList[position].isCompleted
-            // You'll see the UI limitation here — ListView won't reflect state change
-            // This frustration is intentional. RecyclerView fixes this in Phase 2.
         }
     }
 }

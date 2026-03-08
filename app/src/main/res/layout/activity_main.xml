@@ -28,12 +28,12 @@
         app:layout_constraintBottom_toBottomOf="@id/etHabitName"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <ListView
-        android:id="@+id/lvHabits"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHabits"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/etHabitName"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
