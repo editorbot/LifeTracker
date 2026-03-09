@@ -7,35 +7,26 @@
     android:id="@+id/main"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/etHabitName"
+    <!-- This is where fragments are swapped in/out -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter habit name"
-        android:inputType="text"
-       app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnAdd"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"/>
-
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        app:layout_constraintTop_toTopOf="@id/etHabitName"
-        app:layout_constraintBottom_toBottomOf="@id/etHabitName"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHabits"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

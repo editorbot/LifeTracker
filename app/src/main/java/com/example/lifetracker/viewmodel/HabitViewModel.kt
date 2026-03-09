@@ -1,9 +1,9 @@
-package viewmodel
+package com.example.lifetracker.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import model.Habit
+import com.example.lifetracker.model.Habit
 import kotlin.collections.mutableListOf
 
 // viewmodel/HabitViewModel.kt

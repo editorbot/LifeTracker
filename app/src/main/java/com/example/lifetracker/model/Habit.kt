@@ -1,4 +1,4 @@
-package model
+package com.example.lifetracker.model
 
 data class Habit(
     val id: Int,

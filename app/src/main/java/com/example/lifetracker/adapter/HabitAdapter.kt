@@ -1,14 +1,15 @@
-package adapter
+package com.example.lifetracker.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifetracker.databinding.ItemHabitBinding
-import model.Habit
+import com.example.lifetracker.model.Habit
 
 // adapter/HabitAdapter.kt
 class HabitAdapter(
-    private val onHabitClick: (Int) -> Unit  // callback for toggle
+    private val onHabitClick: (Int) -> Unit , // callback for toggle
+    private val onHabitLongClick: (Habit) -> Unit
 ) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     private val habits = mutableListOf<Habit>()

@@ -12,7 +12,8 @@ activity = "1.12.2"
 constraintlayout = "2.2.1"
 navigationFragmentKtx = "2.9.7"
 recyclerview = "1.4.0"
-
+#add
+navigationSafeArgs="2.9.7"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
@@ -31,4 +32,5 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+navigationSafeArgs={id="androidx.navigation.safeargs.kotlin", version.ref="navigationSafeArgs"}
 
