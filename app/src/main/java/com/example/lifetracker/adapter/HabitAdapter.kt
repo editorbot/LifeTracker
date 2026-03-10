@@ -3,16 +3,17 @@ package com.example.lifetracker.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lifetracker.data.db.HabitEntity
 import com.example.lifetracker.databinding.ItemHabitBinding
 import com.example.lifetracker.model.Habit
 
 // adapter/HabitAdapter.kt
 class HabitAdapter(
-    private val onHabitClick: (Int) -> Unit , // callback for toggle
-    private val onHabitLongClick: (Habit) -> Unit
+    private val onHabitClick: (HabitEntity) -> Unit, // callback for toggle
+    private val onHabitLongClick: (HabitEntity) -> Unit
 ) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
-    private val habits = mutableListOf<Habit>()
+    private val habits = mutableListOf<HabitEntity>()
 
     // ViewHolder — holds references to views for ONE list item
     inner class HabitViewHolder(val binding: ItemHabitBinding) :
@@ -22,8 +23,28 @@ class HabitAdapter(
         val binding = ItemHabitBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return HabitViewHolder(binding)
+
+        val holder = HabitViewHolder(binding)
+
+        // Set once here, not every time in onBindViewHolder
+        holder.binding.root.setOnClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_ID.toInt()) {
+                onHabitClick(habits[position])
+            }
+        }
+
+        holder.binding.root.setOnLongClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_ID.toInt()) {
+                onHabitLongClick(habits[position])
+            }
+            true
+        }
+
+        return holder
     }
+
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         val habit = habits[position]
@@ -32,18 +53,18 @@ class HabitAdapter(
         holder.binding.tvHabitName.alpha = if (habit.isCompleted) 0.4f else 1.0f
         holder.binding.cbHabit.isChecked = habit.isCompleted
 
-        // Click anywhere on the item to toggle
-        holder.binding.root.setOnClickListener {
-            onHabitClick(position)
-        }
+
     }
 
     override fun getItemCount() = habits.size
 
     // Call this from Activity when LiveData updates
-    fun updateHabits(newHabits: List<Habit>) {
+    fun updateHabits(newHabits: List<HabitEntity>) {
         habits.clear()
         habits.addAll(newHabits)
         notifyDataSetChanged()
+    }
+    fun getHabitAt(position: Int): HabitEntity {
+        return habits[position]
     }
 }

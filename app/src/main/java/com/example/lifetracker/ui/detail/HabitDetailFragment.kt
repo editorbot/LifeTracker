@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.lifetracker.databinding.FragmentHabitDetailBinding
 import com.example.lifetracker.viewmodel.HabitViewModel
+import kotlinx.coroutines.launch
 
 class HabitDetailFragment : Fragment() {
 
@@ -31,11 +35,16 @@ class HabitDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.habits.observe(viewLifecycleOwner) { habits ->
-            val habit = habits.find { it.id == args.habitId }
-            habit?.let {
-                binding.tvHabitName.text = it.name
-                binding.tvStatus.text = if (it.isCompleted) "✅ Done today" else "⬜ Not done yet"
+        // ✅ Correct — Flow style
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.habits.collect { habits ->
+                    val habit = habits.find { it.id == args.habitId }
+                    habit?.let {
+                        binding.tvHabitName.text = it.name
+                        binding.tvStatus.text = if (it.isCompleted) "✅ Done today" else "⬜ Not done yet"
+                    }
+                }
             }
         }
 

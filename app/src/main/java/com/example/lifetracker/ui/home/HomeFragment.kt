@@ -7,13 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lifetracker.adapter.HabitAdapter
 import com.example.lifetracker.databinding.FragmentHomeBinding
 import com.example.lifetracker.viewmodel.HabitViewModel
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -36,7 +42,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = HabitAdapter(
-            onHabitClick = { position -> viewModel.toggleHabit(position) },
+            onHabitClick = { habit -> viewModel.toggleHabit(habit) },
             onHabitLongClick = { habit ->
                 // Navigate to detail, passing habit id
                 val action = HomeFragmentDirections
@@ -50,9 +56,7 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.habits.observe(viewLifecycleOwner) { habits ->
-            adapter.updateHabits(habits)
-        }
+
 
         binding.btnAdd.setOnClickListener {
             val name = binding.etHabitName.text.toString().trim()
@@ -61,6 +65,27 @@ class HomeFragment : Fragment() {
                 binding.etHabitName.text.clear()
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.habits.collect { habits ->
+                    adapter.updateHabits(habits)
+                }
+            }
+        }
+
+// Add swipe to delete
+        val swipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView,
+                                viewHolder: RecyclerView.ViewHolder,
+                                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val habit = adapter.getHabitAt(viewHolder.adapterPosition)
+                viewModel.deleteHabit(habit)
+            }
+        }
+        ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.rvHabits)
     }
 
     // Critical — avoid memory leaks in Fragments
