@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.lifetracker.R
 import com.example.lifetracker.databinding.ActivityMainBinding
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 

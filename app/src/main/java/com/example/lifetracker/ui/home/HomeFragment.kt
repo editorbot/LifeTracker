@@ -16,19 +16,21 @@ import androidx.recyclerview.widget.ItemTouchHelper
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.lifetracker.adapter.HabitAdapter
 import com.example.lifetracker.databinding.FragmentHomeBinding
 import com.example.lifetracker.viewmodel.HabitViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-
+// ui/home/HomeFragment.kt
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    // Shared ViewModel — scoped to Activity so Stats can access same data
     private val viewModel: HabitViewModel by activityViewModels()
+    private lateinit var habitAdapter: HabitAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,54 +43,68 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = HabitAdapter(
+        setupRecyclerView()
+        setupClickListeners()
+        observeHabits()
+    }
+
+    private fun setupRecyclerView() {
+        habitAdapter = HabitAdapter(
             onHabitClick = { habit -> viewModel.toggleHabit(habit) },
             onHabitLongClick = { habit ->
-                // Navigate to detail, passing habit id
-                val action = HomeFragmentDirections
-                    .actionHomeToDetail(habit.id)
+                val action = HomeFragmentDirections.actionHomeToDetail(habit.id)
                 findNavController().navigate(action)
             }
         )
 
         binding.rvHabits.apply {
-            this.adapter = adapter
+            adapter = habitAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            // Smooth animations on DiffUtil updates
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
 
-
-
-        binding.btnAdd.setOnClickListener {
-            val name = binding.etHabitName.text.toString().trim()
-            if (name.isNotEmpty()) {
-                viewModel.addHabit(name)
-                binding.etHabitName.text.clear()
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.habits.collect { habits ->
-                    adapter.updateHabits(habits)
-                }
-            }
-        }
-
-// Add swipe to delete
-        val swipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(recyclerView: RecyclerView,
-                                viewHolder: RecyclerView.ViewHolder,
-                                target: RecyclerView.ViewHolder
+        // Swipe to delete
+        val swipeCallback = object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val habit = adapter.getHabitAt(viewHolder.adapterPosition)
+                val habit = habitAdapter.getHabitAt(viewHolder.adapterPosition)
                 viewModel.deleteHabit(habit)
+                // Snackbar undo — good UX
+                Snackbar.make(binding.root, "Habit deleted", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") { viewModel.addHabit(habit.title) }
+                    .show()
             }
         }
         ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.rvHabits)
     }
 
-    // Critical — avoid memory leaks in Fragments
+    private fun setupClickListeners() {
+        // FAB replaces the old btnAdd
+        binding.fabAddHabit.setOnClickListener {
+            AddHabitBottomSheet().show(parentFragmentManager, "AddHabit")
+        }
+    }
+
+    private fun observeHabits() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.habitsForToday.collect { habits ->
+                    habitAdapter.submitList(habits) // DiffUtil handles the rest
+                    binding.tvEmptyState.visibility =
+                        if (habits.isEmpty()) View.VISIBLE else View.GONE
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

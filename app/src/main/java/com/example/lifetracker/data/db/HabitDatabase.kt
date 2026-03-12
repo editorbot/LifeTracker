@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 // data/db/HabitDatabase.kt
 @Database(
     entities = [HabitEntity::class],
-    version = 1,
+    version = 2,                    // ← Bumped from 1
     exportSchema = false
 )
 abstract class HabitDatabase : RoomDatabase() {
@@ -20,14 +20,15 @@ abstract class HabitDatabase : RoomDatabase() {
         private var INSTANCE: HabitDatabase? = null
 
         fun getDatabase(context: Context): HabitDatabase {
-            // If instance exists return it, else create it
-            // synchronized = only one thread can create DB at a time
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     HabitDatabase::class.java,
                     "habit_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // ← Wipes DB on version change
+                    // Fine for development — in production you'd write migrations
+                    .build()
                 INSTANCE = instance
                 instance
             }

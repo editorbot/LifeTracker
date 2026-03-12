@@ -15,6 +15,7 @@ import com.example.lifetracker.databinding.FragmentHabitDetailBinding
 import com.example.lifetracker.viewmodel.HabitViewModel
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HabitDetailFragment : Fragment() {
 
     private var _binding: FragmentHabitDetailBinding? = null
