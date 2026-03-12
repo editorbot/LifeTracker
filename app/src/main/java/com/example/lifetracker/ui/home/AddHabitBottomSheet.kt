@@ -5,10 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.example.lifetracker.databinding.BottomSheetAddHabitBinding
 import com.example.lifetracker.model.Category
 import com.example.lifetracker.model.Priority
 import com.example.lifetracker.viewmodel.HabitViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 // ui/home/AddHabitBottomSheet.kt  ← New file in ui/home/
 @AndroidEntryPoint

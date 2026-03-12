@@ -3,6 +3,7 @@ package com.example.lifetracker.data.repository
 import com.example.lifetracker.data.db.HabitDao
 import com.example.lifetracker.data.db.HabitEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 // repository/HabitRepository.kt
 class HabitRepository @Inject constructor(
@@ -36,4 +37,7 @@ class HabitRepository @Inject constructor(
     suspend fun deleteHabit(habit: HabitEntity) {
         dao.deleteHabit(habit)
     }
+    // repository/HabitRepository.kt — add this function
+    fun getHabitsForDateRange(startDate: String, endDate: String): Flow<List<HabitEntity>> =
+        dao.getHabitsForDateRange(startDate, endDate)
 }

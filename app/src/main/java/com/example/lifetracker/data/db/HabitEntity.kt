@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.lifetracker.model.Category
 import com.example.lifetracker.model.Priority
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 // data/db/HabitEntity.kt

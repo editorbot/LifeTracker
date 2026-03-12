@@ -21,6 +21,7 @@ import com.example.lifetracker.adapter.HabitAdapter
 import com.example.lifetracker.databinding.FragmentHomeBinding
 import com.example.lifetracker.viewmodel.HabitViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 // ui/home/HomeFragment.kt

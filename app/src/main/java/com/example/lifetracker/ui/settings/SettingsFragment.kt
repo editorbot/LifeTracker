@@ -9,13 +9,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.lifetracker.data.preferences.UserPreferences
 import com.example.lifetracker.databinding.FragmentSettingsBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-    @Inject lateinit var userPreferences: UserPreferences
+    @Inject
+    lateinit var userPreferences: UserPreferences
     // Remove manual instantiation: UserPreferences(requireContext())
 
     override fun onCreateView(

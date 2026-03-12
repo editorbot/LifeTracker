@@ -52,6 +52,10 @@ interface HabitDao {
 
     @Delete
     suspend fun deleteHabit(habit: HabitEntity)
+
+    // data/db/HabitDao.kt — add this
+    @Query("SELECT * FROM habits WHERE date BETWEEN :startDate AND :endDate")
+    fun getHabitsForDateRange(startDate: String, endDate: String): Flow<List<HabitEntity>>
 }
 
 // Data class for category query result

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.lifetracker.R
 import com.example.lifetracker.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,11 +40,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
 
         // Hide bottom nav on detail screen
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.habitDetailFragment -> binding.bottomNav.visibility = View.GONE
-                else -> binding.bottomNav.visibility = View.VISIBLE
-            }
-        }
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            when (destination.id) {
+//                R.id.habitDetailFragment -> binding.bottomNav.visibility = View.GONE
+//                else -> binding.bottomNav.visibility = View.VISIBLE
+//            }
+//        }
     }
 }

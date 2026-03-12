@@ -10,11 +10,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifetracker.data.db.HabitEntity
 import com.example.lifetracker.databinding.ItemHabitBinding
-import com.example.lifetracker.model.Habit
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+
+// ← This must be here, OUTSIDE the adapter class
+class HabitDiffCallback : DiffUtil.ItemCallback<HabitEntity>() {
+    override fun areItemsTheSame(oldItem: HabitEntity, newItem: HabitEntity): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: HabitEntity, newItem: HabitEntity): Boolean {
+        return oldItem == newItem
+    }
+}
 // adapter/HabitAdapter.kt
 class HabitAdapter(
     private val onHabitClick: (HabitEntity) -> Unit,

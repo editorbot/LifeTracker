@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.lifetracker.databinding.FragmentHabitDetailBinding
 import com.example.lifetracker.viewmodel.HabitViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,10 +40,10 @@ class HabitDetailFragment : Fragment() {
         // ✅ Correct — Flow style
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.habits.collect { habits ->
+                viewModel.habitsForToday.collect { habits ->
                     val habit = habits.find { it.id == args.habitId }
                     habit?.let {
-                        binding.tvHabitName.text = it.name
+                        binding.tvHabitName.text = it.title
                         binding.tvStatus.text = if (it.isCompleted) "✅ Done today" else "⬜ Not done yet"
                     }
                 }
