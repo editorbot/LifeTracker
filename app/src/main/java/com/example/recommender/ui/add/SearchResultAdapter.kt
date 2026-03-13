@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recommender.data.SearchResult
-import com.example.recommender.databinding.ItemSearchResultBinding
+import com.example.lifetracker.databinding.ItemSearchResultrecBinding
 
 
 class SearchResultAdapter(
@@ -16,7 +16,7 @@ class SearchResultAdapter(
 ) : ListAdapter<SearchResult, SearchResultAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemSearchResultBinding.inflate(
+        val binding = ItemSearchResultrecBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
@@ -26,7 +26,7 @@ class SearchResultAdapter(
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemSearchResultBinding) :
+    inner class ViewHolder(private val binding: ItemSearchResultrecBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(result: SearchResult) {

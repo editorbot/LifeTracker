@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.example.recommender.data.MediaItem
 import com.example.recommender.data.MediaType
-import com.example.recommender.databinding.ItemMediaBinding
+import com.example.lifetracker.databinding.ItemMediarecBinding
 
 
 class MediaAdapter(
@@ -17,7 +17,7 @@ class MediaAdapter(
 ) : ListAdapter<MediaItem, MediaAdapter.MediaViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
-        val binding = ItemMediaBinding.inflate(
+        val binding = ItemMediarecBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return MediaViewHolder(binding)
@@ -28,7 +28,7 @@ class MediaAdapter(
     }
 
     inner class MediaViewHolder(
-        private val binding: ItemMediaBinding
+        private val binding: ItemMediarecBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MediaItem) {

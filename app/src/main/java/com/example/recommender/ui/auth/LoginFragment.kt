@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.ui.authenticator.ui.Authenticator
-import com.example.recommender.R
+import com.example.lifetracker.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume

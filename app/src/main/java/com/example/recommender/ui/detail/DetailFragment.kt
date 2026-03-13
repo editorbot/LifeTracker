@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.recommender.data.MediaItem
 import com.example.recommender.data.MediaType
-import com.example.recommender.databinding.FragmentDetailBinding
+import com.example.lifetracker.databinding.FragmentDetailrecBinding
 import com.example.recommender.ui.ViewModelFactory
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
 
-    private var _binding: FragmentDetailBinding? = null
+    private var _binding: FragmentDetailrecBinding? = null
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
 
@@ -32,7 +32,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailrecBinding.inflate(inflater, container, false)
         return binding.root
     }
 

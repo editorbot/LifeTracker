@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.recommender.R
+import com.example.lifetracker.R
+import com.example.lifetracker.databinding.FragmentForYourecBinding
 import com.example.recommender.data.MediaType
-import com.example.recommender.databinding.FragmentForYouBinding
 import com.example.recommender.ui.ViewModelFactory
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class ForYouFragment : Fragment() {
 
-    private var _binding: FragmentForYouBinding? = null
+    private var _binding: FragmentForYourecBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ForYouViewModel by viewModels {
@@ -44,7 +44,7 @@ class ForYouFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentForYouBinding.inflate(inflater, container, false)
+        _binding = FragmentForYourecBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.recommender.databinding.ItemRecommendationBinding
+import com.example.lifetracker.databinding.ItemRecommendationrecBinding
 
 
 class RecommendationCardAdapter :
     ListAdapter<AwsRecommendation, RecommendationCardAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemRecommendationBinding.inflate(
+        val binding = ItemRecommendationrecBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
@@ -26,7 +26,7 @@ class RecommendationCardAdapter :
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemRecommendationBinding) :
+    inner class ViewHolder(private val binding: ItemRecommendationrecBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(rec: AwsRecommendation) {

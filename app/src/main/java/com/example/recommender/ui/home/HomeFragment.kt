@@ -10,19 +10,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lifetracker.databinding.FragmentHomerecBinding
 import com.example.recommender.data.local.MediaDatabase
 import com.example.recommender.data.remote.waste.RetrofitClient
 import com.example.recommender.data.remote.books.BooksRetrofitClient
 import com.example.recommender.data.remote.tmdb.TmdbRetrofitClient
 import com.example.recommender.data.repository.MediaRepository
-import com.example.recommender.databinding.FragmentHomeBinding
 import com.example.recommender.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomerecBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels {
@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomerecBinding.inflate(inflater, container, false)
         return binding.root
     }
 

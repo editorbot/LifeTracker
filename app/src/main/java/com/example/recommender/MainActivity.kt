@@ -8,9 +8,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.lifetracker.databinding.ActivityMainBinding
 import com.example.recommender.auth.AmplifyAuthManager
-import com.example.recommender.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
+import com.example.lifetracker.R
 
 class MainActivity : AppCompatActivity() {
 

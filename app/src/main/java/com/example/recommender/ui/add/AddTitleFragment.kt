@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recommender.R
+import com.example.lifetracker.R
 import com.example.recommender.data.MediaType
 import com.example.recommender.data.SearchResult
-import com.example.recommender.databinding.FragmentAddTitleBinding
+import com.example.lifetracker.databinding.FragmentAddTitlerecBinding
 import com.example.recommender.ui.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 class AddTitleFragment : Fragment() {
 
-    private var _binding: FragmentAddTitleBinding? = null
+    private var _binding: FragmentAddTitlerecBinding? = null
     private val binding get() = _binding!!
 
 
@@ -39,7 +39,7 @@ class AddTitleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddTitleBinding.inflate(inflater, container, false)
+        _binding = FragmentAddTitlerecBinding.inflate(inflater, container, false)
         return binding.root
     }
 

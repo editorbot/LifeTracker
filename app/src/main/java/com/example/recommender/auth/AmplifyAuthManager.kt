@@ -7,7 +7,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.auth.options.AuthSignOutOptions
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.AmplifyConfiguration
-import com.example.recommender.R
+import com.example.lifetracker.R
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
