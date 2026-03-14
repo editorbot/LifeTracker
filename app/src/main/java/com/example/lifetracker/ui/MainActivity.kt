@@ -6,12 +6,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.lifetracker.R
 import com.example.lifetracker.databinding.ActivityMainBinding
+import com.example.recommender.auth.AmplifyAuthManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -38,13 +41,17 @@ class MainActivity : AppCompatActivity() {
 
         // This one line connects BottomNav to NavController
         binding.bottomNav.setupWithNavController(navController)
-
-        // Hide bottom nav on detail screen
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            when (destination.id) {
-//                R.id.habitDetailFragment -> binding.bottomNav.visibility = View.GONE
-//                else -> binding.bottomNav.visibility = View.VISIBLE
-//            }
-//        }
+        lifecycleScope.launch {
+            if (!AmplifyAuthManager.isSignedIn()) {
+                navController.navigate(R.id.loginFragment)
+            }
+        }
+//         Hide bottom nav on detail screen
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.habitDetailFragment -> binding.bottomNav.visibility = View.GONE
+                else -> binding.bottomNav.visibility = View.VISIBLE
+            }
+        }
     }
 }

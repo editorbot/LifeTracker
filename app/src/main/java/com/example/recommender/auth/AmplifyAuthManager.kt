@@ -3,6 +3,7 @@ package com.example.recommender.auth
 
 import android.content.Context
 import android.util.Log
+import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.auth.options.AuthSignOutOptions
 import com.amplifyframework.core.Amplify
@@ -20,6 +21,7 @@ object AmplifyAuthManager {
         if (initialized) return
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
+            Amplify.addPlugin(AWSApiPlugin())        // ← Add this line
             val config = AmplifyConfiguration.fromConfigFile(
                 context,
                 R.raw.amplify_config   // the json file you put in res/raw
@@ -70,5 +72,11 @@ object AmplifyAuthManager {
         Amplify.Auth.signOut(
             AuthSignOutOptions.builder().globalSignOut(true).build()
         ) { cont.resume(Unit) }
+    }
+    suspend fun getCurrentUserId(): String = suspendCancellableCoroutine { cont ->
+        Amplify.Auth.getCurrentUser(
+            { user -> cont.resume(user.userId) },
+            { error -> cont.resumeWithException(Exception(error.message)) }
+        )
     }
 }

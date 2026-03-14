@@ -1,0 +1,43 @@
+# this is an auto generated file. This will be overwritten
+
+query GetHabit($id: ID!) {
+  getHabit(id: $id) {
+    id
+    title
+    priority
+    category
+    isCompleted
+    date
+    startTime
+    endTime
+    createdAt
+    updatedAt
+    owner
+    __typename
+  }
+}
+
+query ListHabits(
+  $filter: ModelHabitFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listHabits(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      priority
+      category
+      isCompleted
+      date
+      startTime
+      endTime
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}

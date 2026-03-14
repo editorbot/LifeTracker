@@ -1,0 +1,61 @@
+# this is an auto generated file. This will be overwritten
+
+subscription OnCreateHabit(
+  $filter: ModelSubscriptionHabitFilterInput
+  $owner: String
+) {
+  onCreateHabit(filter: $filter, owner: $owner) {
+    id
+    title
+    priority
+    category
+    isCompleted
+    date
+    startTime
+    endTime
+    createdAt
+    updatedAt
+    owner
+    __typename
+  }
+}
+
+subscription OnUpdateHabit(
+  $filter: ModelSubscriptionHabitFilterInput
+  $owner: String
+) {
+  onUpdateHabit(filter: $filter, owner: $owner) {
+    id
+    title
+    priority
+    category
+    isCompleted
+    date
+    startTime
+    endTime
+    createdAt
+    updatedAt
+    owner
+    __typename
+  }
+}
+
+subscription OnDeleteHabit(
+  $filter: ModelSubscriptionHabitFilterInput
+  $owner: String
+) {
+  onDeleteHabit(filter: $filter, owner: $owner) {
+    id
+    title
+    priority
+    category
+    isCompleted
+    date
+    startTime
+    endTime
+    createdAt
+    updatedAt
+    owner
+    __typename
+  }
+}

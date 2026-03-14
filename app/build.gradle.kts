@@ -101,4 +101,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose")
+
+    // Amplify API
+    implementation("com.amplifyframework:aws-api:2.14.0")
+    implementation("com.amplifyframework:aws-datastore:2.14.0")
 }

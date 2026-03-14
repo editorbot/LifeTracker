@@ -2,6 +2,7 @@ package com.example.lifetracker.di
 
 import com.example.lifetracker.data.db.HabitDao
 import com.example.lifetracker.data.repository.HabitRepository
+import com.example.lifetracker.data.sync.SyncManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,9 +14,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
+
+
     @Provides
     @Singleton
-    fun provideHabitRepository(dao: HabitDao): HabitRepository {
-        return HabitRepository(dao)
+    fun provideSyncManager(): SyncManager = SyncManager()
+
+    @Provides
+    @Singleton
+    fun provideHabitRepository(
+        dao: HabitDao,
+        syncManager: SyncManager
+    ): HabitRepository {
+        return HabitRepository(dao, syncManager)
     }
 }

@@ -13,6 +13,8 @@ import java.util.Locale
 data class HabitEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val remoteId: String? = null,       // ← DynamoDB id
+    val userId: String = "",
     val title: String,
     val startTime: Long? = null,        // nullable — not all habits need time
     val endTime: Long? = null,

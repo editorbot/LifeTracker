@@ -34,5 +34,12 @@
             android:name="habitId"
             app:argType="integer"/>
     </fragment>
-
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.recommender.ui.auth.LoginFragment"
+        android:label="Login" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.recommender.ui.auth.SignUpFragment"
+        android:label="Sign Up" />
 </navigation>

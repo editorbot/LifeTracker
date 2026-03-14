@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-aws3book-dev-501f2-authRole",
+      "UnauthRoleArn": "arn:aws:iam::918445420772:role/amplify-aws3book-dev-501f2-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::918445420772:role/amplify-aws3book-dev-501f2-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-aws3book-dev-501f2-deployment",
+      "UnauthRoleName": "amplify-aws3book-dev-501f2-unauthRole",
+      "StackName": "amplify-aws3book-dev-501f2",
+      "StackId": "arn:aws:cloudformation:us-east-1:918445420772:stack/amplify-aws3book-dev-501f2/463df9c0-1979-11f1-9b78-0affe6c04769",
+      "AmplifyAppId": "d19xlzu7tlftyh"
+    },
+    "categories": {
+      "auth": {
+        "aws3book747882e3": {}
+      },
+      "api": {
+        "aws3book": {}
+      }
+    }
+  }
+}
