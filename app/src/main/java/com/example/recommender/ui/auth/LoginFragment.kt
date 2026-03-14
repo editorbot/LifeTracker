@@ -11,16 +11,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.ui.authenticator.ui.Authenticator
 import com.example.lifetracker.R
+import com.example.lifetracker.viewmodel.HabitViewModel
+
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.getValue
 
 //class LoginFragment : Fragment() {
 //
@@ -83,6 +87,7 @@ import kotlin.coroutines.resumeWithException
 //        }
 //}
 class LoginFragment : Fragment() {
+    private val viewModel: HabitViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,9 +98,12 @@ class LoginFragment : Fragment() {
             setContent {
                 // Now Authenticator works perfectly here
                 Authenticator {
-                    // This runs when sign in is successful
-
-                        findNavController().navigate(R.id.homeFragment)
+                    // Auth success — initialize user before navigating
+                    viewModel.initializeUser {
+                        activity?.runOnUiThread {
+                            findNavController().navigate(R.id.homeFragment)
+                        }
+                    }
                 }
             }
         }

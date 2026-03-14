@@ -71,4 +71,6 @@ object AmplifyAuthManager {
             AuthSignOutOptions.builder().globalSignOut(true).build()
         ) { cont.resume(Unit) }
     }
+
+
 }

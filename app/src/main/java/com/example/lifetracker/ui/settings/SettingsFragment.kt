@@ -7,10 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.lifetracker.R
 import com.example.lifetracker.data.preferences.UserPreferences
 import com.example.lifetracker.databinding.FragmentSettingsBinding
+import com.example.lifetracker.viewmodel.HabitViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.getValue
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -20,7 +25,7 @@ class SettingsFragment : Fragment() {
     @Inject
     lateinit var userPreferences: UserPreferences
     // Remove manual instantiation: UserPreferences(requireContext())
-
+    private val viewModel: HabitViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,6 +63,13 @@ class SettingsFragment : Fragment() {
         binding.btnSaveName.setOnClickListener {
             userPreferences.userName = binding.etUserName.text.toString().trim()
             Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnLogout.setOnClickListener {
+            viewModel.signOut {
+                activity?.runOnUiThread {
+                    findNavController().navigate(R.id.loginFragment)
+                }
+            }
         }
     }
 

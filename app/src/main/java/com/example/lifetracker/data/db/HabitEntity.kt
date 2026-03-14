@@ -13,6 +13,7 @@ import java.util.Locale
 data class HabitEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val userId: String = "",        // ← Add this
     val title: String,
     val startTime: Long? = null,        // nullable — not all habits need time
     val endTime: Long? = null,

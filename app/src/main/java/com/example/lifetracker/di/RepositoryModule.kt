@@ -2,6 +2,7 @@ package com.example.lifetracker.di
 
 import com.example.lifetracker.data.db.HabitDao
 import com.example.lifetracker.data.repository.HabitRepository
+import com.example.recommender.auth.AuthManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +16,16 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideHabitRepository(dao: HabitDao): HabitRepository {
-        return HabitRepository(dao)
+    fun provideAuthManager(): AuthManager {
+        return AuthManager()
+    }
+
+    @Provides
+    @Singleton
+    fun provideHabitRepository(
+        dao: HabitDao,
+        authManager: AuthManager
+    ): HabitRepository {
+        return HabitRepository(dao, authManager)
     }
 }
