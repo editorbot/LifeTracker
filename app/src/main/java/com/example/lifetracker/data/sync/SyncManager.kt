@@ -18,6 +18,7 @@ class SyncManager @Inject constructor() {
         onSuccess: (String) -> Unit,  // returns remote id
         onFailure: (Exception) -> Unit
     ) {
+        Log.d("SyncManager", "Attempting to create habit: ${habit.title}")
         // Build Habit model directly — no separate Input class needed
         val remoteHabit = Habit.builder()
             .title(habit.title)
@@ -34,14 +35,20 @@ class SyncManager @Inject constructor() {
         Amplify.API.mutate(
             ModelMutation.create(remoteHabit),
             { response ->
+                Log.d("SyncManager", "Response received: ${response.data}")
+                Log.d("SyncManager", "Errors: ${response.errors}")
                 val remoteId = response.data?.id
                 if (remoteId != null) {
+                    Log.d("SyncManager", "✅ Created successfully with id: $remoteId")
                     onSuccess(remoteId)
                 } else {
+                    Log.e("SyncManager", "❌ No remote id — errors: ${response.errors}")
                     onFailure(Exception("No remote id returned"))
                 }
             },
             { error ->
+                Log.e("SyncManager", "❌ API call failed: ${error.message}")
+                Log.e("SyncManager", "Cause: ${error.cause}")
                 Log.e("SyncManager", "Create failed: ${error.message}")
                 onFailure(Exception(error.message))
             }

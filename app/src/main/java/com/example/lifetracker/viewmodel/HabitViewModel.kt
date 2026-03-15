@@ -107,23 +107,29 @@ class HabitViewModel @Inject constructor(
 
     // ── Stats ─────────────────────────────────────────────────────────
 
-    val categoryStats: StateFlow<List<CategoryStat>> = flow {
-        val (start, end) = getWeekDateRange()
-        emitAll(repository.getCategoryStats(start, end))
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
+    // ✅ Replace categoryStats with this
+    val categoryStats: StateFlow<List<CategoryStat>> = repository.allHabits
+        .flatMapLatest {
+            val (start, end) = getWeekDateRange()
+            repository.getCategoryStats(start, end)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
-    val weeklyHabits: StateFlow<List<HabitEntity>> = flow {
-        val (start, end) = getWeekDateRange()
-        emitAll(repository.getHabitsForDateRange(start, end))
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
+    // ✅ Replace weeklyHabits with this
+    val weeklyHabits: StateFlow<List<HabitEntity>> = repository.allHabits
+        .flatMapLatest {
+            val (start, end) = getWeekDateRange()
+            repository.getHabitsForDateRange(start, end)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     val currentStreak: StateFlow<Int> = repository.allHabits
         .map { habits -> calculateStreak(habits) }
