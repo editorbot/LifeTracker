@@ -42,4 +42,34 @@
         android:id="@+id/signUpFragment"
         android:name="com.example.recommender.ui.auth.SignUpFragment"
         android:label="Sign Up" />
+
+<!--    rec-->
+    <fragment
+        android:id="@+id/homeFragmentrec"
+        android:name="com.example.recommender.ui.home.HomeFragment"
+        android:label="Home" >
+        <action
+            android:id="@+id/action_home_to_detail"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addTitleFragment"
+        android:name="com.example.recommender.ui.add.AddTitleFragment"
+        android:label="Add Title" />
+
+    <fragment
+        android:id="@+id/forYouFragment"
+        android:name="com.example.recommender.ui.foryou.ForYouFragment"
+        android:label="For You" />
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.recommender.ui.detail.DetailFragment"
+        android:label="Detail">
+        <argument
+            android:name="mediaItemId"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

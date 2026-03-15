@@ -3,9 +3,12 @@ package com.example.lifetracker.ui
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,6 +23,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var drawerLayout: DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,6 +56,29 @@ class MainActivity : AppCompatActivity() {
                 R.id.habitDetailFragment, R.id.loginFragment -> binding.bottomNav.visibility = View.GONE
                 else -> binding.bottomNav.visibility = View.VISIBLE
             }
+        }
+        drawerLayout = binding.drawerLayout
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
+
+        // Hamburger icon toggle
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar,
+            R.string.drawer_open,
+            R.string.drawer_close
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()  // ← this shows the 3-line icon
+
+        // Handle item clicks
+        binding.navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeFragment -> {findNavController(R.id.navHostFragment).navigate(R.id.homeFragment) }
+                R.id.mainrec -> { findNavController(R.id.navHostFragment).navigate(R.id.mainrec) }
+
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
     }
 }

@@ -2,9 +2,12 @@ package com.example.recommender
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -22,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainrec)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -34,10 +37,10 @@ class MainActivity : AppCompatActivity() {
         // This single line wires bottom nav to navigation component
         binding.bottomNav.setupWithNavController(navController)
         // Check if user is signed in — if not, go to login
-        lifecycleScope.launch {
-            if (!AmplifyAuthManager.isSignedIn()) {
-                navController.navigate(R.id.loginFragment)
-            }
-        }
+//        lifecycleScope.launch {
+//            if (!AmplifyAuthManager.isSignedIn()) {
+//                navController.navigate(R.id.loginFragment)
+//            }
+//        }
     }
 }
