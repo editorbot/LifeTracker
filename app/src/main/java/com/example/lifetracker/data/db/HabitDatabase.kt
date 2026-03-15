@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 // data/db/HabitDatabase.kt
 @Database(
     entities = [HabitEntity::class],
-    version = 3,                    // ← Bumped from 1
+    version = 4,                    // ← Bumped from 1
     exportSchema = false
 )
 abstract class HabitDatabase : RoomDatabase() {
