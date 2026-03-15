@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 //         Hide bottom nav on detail screen
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.habitDetailFragment -> binding.bottomNav.visibility = View.GONE
+                R.id.habitDetailFragment, R.id.loginFragment -> binding.bottomNav.visibility = View.GONE
                 else -> binding.bottomNav.visibility = View.VISIBLE
             }
         }
