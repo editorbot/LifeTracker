@@ -1,5 +1,6 @@
 package com.example.lifetracker.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -73,8 +74,10 @@ class MainActivity : AppCompatActivity() {
         // Handle item clicks
         binding.navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.homeFragment -> {findNavController(R.id.navHostFragment).navigate(R.id.homeFragment) }
-                R.id.mainrec -> { findNavController(R.id.navHostFragment).navigate(R.id.mainrec) }
+                R.id.main -> {val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent) }
+                R.id.mainrec -> { val intent = Intent(this, com.example.recommender.MainActivity::class.java)
+                    startActivity(intent) }
 
             }
             drawerLayout.closeDrawer(GravityCompat.START)
