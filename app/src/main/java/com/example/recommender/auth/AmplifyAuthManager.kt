@@ -24,7 +24,7 @@ object AmplifyAuthManager {
             Amplify.addPlugin(AWSApiPlugin())        // ← Add this line
             val config = AmplifyConfiguration.fromConfigFile(
                 context,
-                R.raw.amplify_config   // the json file you put in res/raw
+                R.raw.amplifyconfiguration   // the json file you put in res/raw
             )
             Amplify.configure(config, context)
             initialized = true

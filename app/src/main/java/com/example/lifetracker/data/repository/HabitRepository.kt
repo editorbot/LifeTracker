@@ -54,7 +54,7 @@ class HabitRepository @Inject constructor(
             habit = localEntity,
             onSuccess = { remoteId ->
                 // Store remoteId so we can update/delete later
-                kotlinx.coroutines.GlobalScope.launch {
+                repositoryScope.launch {
                     dao.updateRemoteId(localEntity.id, remoteId)
                 }
             },
