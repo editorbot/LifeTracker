@@ -66,8 +66,13 @@ class HabitRepository @Inject constructor(
     }
 
     suspend fun toggleHabit(habit: HabitEntity) {
+        val isNowCompleted = !habit.isCompleted
         // 1. Update locally
-        val updated = habit.copy(isCompleted = !habit.isCompleted)
+        val updated = habit.copy(
+            isCompleted = !habit.isCompleted,
+            completedAt = if (isNowCompleted) System.currentTimeMillis() else null
+            // ↑ stamp time when checked, clear it when unchecked
+            )
         dao.updateHabit(updated)
 
         // 2. Sync to DynamoDB
@@ -118,6 +123,7 @@ class HabitRepository @Inject constructor(
                                     date = remote.date,
                                     startTime = remote.startTime?.toLongOrNull(),
                                     endTime = remote.endTime?.toLongOrNull(),
+                                    completedAt = remote.completedAt?.toLongOrNull(),  // ← Add this
                                     createdAt = remote.createdAt?.toLongOrNull()
                                         ?: System.currentTimeMillis()
                                 )

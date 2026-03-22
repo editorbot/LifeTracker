@@ -11,6 +11,7 @@ query GetHabit($id: ID!) {
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
@@ -33,6 +34,7 @@ query ListHabits(
       startTime
       endTime
       createdAt
+      completedAt
       updatedAt
       owner
       __typename

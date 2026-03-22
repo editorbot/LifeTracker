@@ -29,6 +29,7 @@ class SyncManager @Inject constructor() {
             .createdAt(habit.createdAt.toString())
             .startTime(habit.startTime?.toString())
             .endTime(habit.endTime?.toString())
+            .completedAt(habit.completedAt?.toString())  // ← Add this
 
             .build()
 
@@ -94,6 +95,7 @@ class SyncManager @Inject constructor() {
             .createdAt(habit.createdAt.toString())
             .startTime(habit.startTime?.toString())
             .endTime(habit.endTime?.toString())
+            .completedAt(habit.completedAt?.toString())  // ← Add this
             .id(remoteId)   // ← must pass id for update
             .build()
 
@@ -120,6 +122,7 @@ class SyncManager @Inject constructor() {
             .isCompleted(false)
             .date("")
             .createdAt("")
+            .completedAt(null)      // ← Add this (null is fine — delete ignores it)
             .id(remoteId)   // ← only this matters for delete
             .build()
 

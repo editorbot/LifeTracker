@@ -8,4 +8,5 @@ type Habit @model @auth(rules: [{allow: owner}]) {
     startTime: String
     endTime: String
     createdAt: String!
+    completedAt: String    # ← Add this (nullable — String stores timestamp)
 }

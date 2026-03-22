@@ -14,6 +14,7 @@ mutation CreateHabit(
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
@@ -34,6 +35,7 @@ mutation UpdateHabit(
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
@@ -54,6 +56,7 @@ mutation DeleteHabit(
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
