@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.habitDetailFragment, R.id.loginFragment -> binding.bottomNav.visibility = View.GONE
                 else -> binding.bottomNav.visibility = View.VISIBLE
             }
+            when(destination.id){
+                R.id.loginFragment ->binding.toolbar.visibility =View.GONE
+                else -> binding.toolbar.visibility =View.VISIBLE
+            }
         }
         drawerLayout = binding.drawerLayout
         val toolbar = binding.toolbar

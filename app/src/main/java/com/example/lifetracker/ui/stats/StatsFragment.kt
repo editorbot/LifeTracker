@@ -2,6 +2,7 @@ package com.example.lifetracker.ui.stats
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,7 @@ class StatsFragment : Fragment() {
                 // Weekly habits — drives summary + bar chart
                 launch {
                     viewModel.weeklyHabits.collect { habits ->
+                        Log.d("StatsDebug", "Weekly habits count: ${habits.size}")
                         updateWeeklySummary(habits)
                         updateBarChart(habits)
                     }
@@ -77,6 +79,7 @@ class StatsFragment : Fragment() {
                 // Category stats — drives pie chart
                 launch {
                     viewModel.categoryStats.collect { stats ->
+                        Log.d("StatsDebug", "Category stats count: ${stats.size}")
                         updatePieChart(stats)
                     }
                 }
@@ -97,7 +100,7 @@ class StatsFragment : Fragment() {
 
         // Productive hours — sum of (endTime - startTime) for completed habits
         val productiveMillis = habits
-            .filter { it.isCompleted && it.startTime != null && it.endTime != null }
+            .filter { it.isCompleted && it.startTime != null && it.completedAt != null }
             .sumOf { (it.completedAt!! - it.startTime!!) }
 
         val hours = TimeUnit.MILLISECONDS.toHours(productiveMillis)

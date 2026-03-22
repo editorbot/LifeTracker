@@ -1,5 +1,6 @@
 package com.example.lifetracker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lifetracker.data.db.CategoryStat
@@ -40,9 +41,14 @@ class HabitViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val userId = AmplifyAuthManager.getCurrentUserId()
+                Log.d("RepoDebug", "Got userId from Cognito: $userId")
                 repository.setUserId(userId)
-                repository.syncFromRemote { onReady() }
+                repository.syncFromRemote {
+                    // ← Force flows to re-emit with correct userId
+                    _selectedDate.value = getCurrentDate()
+                    onReady() }
             } catch (e: Exception) {
+                _selectedDate.value = getCurrentDate()
                 onReady()
             }
         }
@@ -115,7 +121,7 @@ class HabitViewModel @Inject constructor(
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
 
@@ -127,7 +133,7 @@ class HabitViewModel @Inject constructor(
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
 
@@ -135,21 +141,36 @@ class HabitViewModel @Inject constructor(
         .map { habits -> calculateStreak(habits) }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Eagerly,
             initialValue = 0
         )
 
     // ── Helpers ───────────────────────────────────────────────────────
 
     private fun getWeekDateRange(): Pair<String, String> {
+//        val calendar = Calendar.getInstance()
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+//        val startDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//            .format(calendar.time)
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+//        calendar.add(Calendar.WEEK_OF_YEAR, 1)
+//        val endDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//            .format(calendar.time)
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        val startDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            .format(calendar.time)
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-        calendar.add(Calendar.WEEK_OF_YEAR, 1)
-        val endDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            .format(calendar.time)
+
+        // Set to Monday of CURRENT week
+        // MONDAY=2, if today is Sunday(=1) we need to go back 6 days
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val daysFromMonday = if (dayOfWeek == Calendar.SUNDAY) 6
+        else dayOfWeek - Calendar.MONDAY
+        calendar.add(Calendar.DAY_OF_YEAR, -daysFromMonday)
+        val startDate = sdf.format(calendar.time)
+
+        // Add 6 days to get to Sunday
+        calendar.add(Calendar.DAY_OF_YEAR, 6)
+        val endDate = sdf.format(calendar.time)
+        Log.d("RepoDebug", "Week range: $startDate to $endDate")
         return Pair(startDate, endDate)
     }
 

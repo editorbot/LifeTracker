@@ -1,6 +1,7 @@
 package com.example.lifetracker.data.repository
 
 import android.util.Log
+import com.example.lifetracker.data.db.CategoryStat
 import com.example.lifetracker.data.db.HabitDao
 import com.example.lifetracker.data.db.HabitEntity
 import com.example.lifetracker.data.sync.SyncManager
@@ -10,6 +11,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,33 +25,59 @@ class HabitRepository @Inject constructor(
 
     private val syncManager: SyncManager    // ← inject SyncManager
 ) {
-    private var currentUserId: String = ""
+    private val currentUserId= MutableStateFlow("")
 
     // Own scope — safer than GlobalScope, cancelled when needed
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     fun setUserId(userId: String) {
-        currentUserId = userId
+        Log.d("RepoDebug", "Setting userId: $userId")
+        currentUserId.value = userId
+        // Check what's in Room right now
+        repositoryScope.launch {
+            val count = dao.getAllHabits(userId).first().size
+            Log.d("RepoDebug", "Habits in Room for this user: $count")
+        }
     }
 
     fun getHabitsForDate(date: String): Flow<List<HabitEntity>> =
-        dao.getHabitsByDate(currentUserId, date)
+        currentUserId.flatMapLatest { userId ->
+            if (userId.isEmpty()) flowOf(emptyList())
+            else dao.getHabitsByDate(userId, date)
+        }
+
 
     val allHabits: Flow<List<HabitEntity>>
-        get() = dao.getAllHabits(currentUserId)
+        get() = currentUserId.flatMapLatest { userId ->
+            Log.d("RepoDebug", "allHabits flatMapLatest triggered with userId: $userId")
+            if (userId.isEmpty()) flowOf(emptyList())
+            else dao.getAllHabits(userId)
+        }
 
     val completedCount: Flow<Int>
-        get() = dao.getCompletedCount(currentUserId)
+        get() = currentUserId.flatMapLatest { userId ->
+            if (userId.isEmpty()) flowOf(0)
+            else dao.getCompletedCount(userId)
+        }
 
-    fun getCategoryStats(startDate: String, endDate: String) =
-        dao.getCategoryStats(currentUserId, startDate, endDate)
+    fun getCategoryStats(startDate: String, endDate: String): Flow<List<CategoryStat>> =
+        currentUserId.flatMapLatest { userId ->
+            Log.d("RepoDebug", "getCategoryStats userId=$userId start=$startDate end=$endDate")
+            if (userId.isEmpty()) flowOf(emptyList())
+            else dao.getCategoryStats(userId, startDate, endDate)
+        }
 
-    fun getHabitsForDateRange(startDate: String, endDate: String) =
-        dao.getHabitsForDateRange(currentUserId, startDate, endDate)
+    fun getHabitsForDateRange(startDate: String, endDate: String): Flow<List<HabitEntity>> =
+        currentUserId.flatMapLatest { userId ->
+            Log.d("RepoDebug", "getHabitsForDateRange userId=$userId start=$startDate end=$endDate")
+            if (userId.isEmpty()) flowOf(emptyList())
+            else dao.getHabitsForDateRange(userId, startDate, endDate)
+        }
+
 
     suspend fun addHabit(entity: HabitEntity) {
         // 1. Save locally first — app feels instant
-        val localEntity = entity.copy(userId = currentUserId)
+        val localEntity = entity.copy(userId = currentUserId.value)
         dao.insertHabit(localEntity)
 
         // 2. Push to DynamoDB in background
@@ -115,7 +146,7 @@ class HabitRepository @Inject constructor(
                             dao.insertHabit(
                                 HabitEntity(
                                     remoteId = remote.id,
-                                    userId = currentUserId,
+                                    userId = currentUserId.value,
                                     title = remote.title,
                                     priority = Priority.valueOf(remote.priority),
                                     category = Category.valueOf(remote.category),
@@ -141,6 +172,6 @@ class HabitRepository @Inject constructor(
     }
 
     suspend fun clearUserData() {
-        dao.deleteAllHabitsForUser(currentUserId)
+        dao.deleteAllHabitsForUser(currentUserId.value)
     }
 }
