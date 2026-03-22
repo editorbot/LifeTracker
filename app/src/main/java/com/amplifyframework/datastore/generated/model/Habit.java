@@ -35,6 +35,7 @@ public final class Habit implements Model {
   public static final QueryField START_TIME = field("Habit", "startTime");
   public static final QueryField END_TIME = field("Habit", "endTime");
   public static final QueryField CREATED_AT = field("Habit", "createdAt");
+  public static final QueryField COMPLETED_AT = field("Habit", "completedAt");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String", isRequired = true) String priority;
@@ -44,6 +45,7 @@ public final class Habit implements Model {
   private final @ModelField(targetType="String") String startTime;
   private final @ModelField(targetType="String") String endTime;
   private final @ModelField(targetType="String", isRequired = true) String createdAt;
+  private final @ModelField(targetType="String") String completedAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */
   @Deprecated
@@ -87,11 +89,15 @@ public final class Habit implements Model {
       return createdAt;
   }
   
+  public String getCompletedAt() {
+      return completedAt;
+  }
+  
   public Temporal.DateTime getUpdatedAt() {
       return updatedAt;
   }
   
-  private Habit(String id, String title, String priority, String category, Boolean isCompleted, String date, String startTime, String endTime, String createdAt) {
+  private Habit(String id, String title, String priority, String category, Boolean isCompleted, String date, String startTime, String endTime, String createdAt, String completedAt) {
     this.id = id;
     this.title = title;
     this.priority = priority;
@@ -101,6 +107,7 @@ public final class Habit implements Model {
     this.startTime = startTime;
     this.endTime = endTime;
     this.createdAt = createdAt;
+    this.completedAt = completedAt;
   }
   
   @Override
@@ -120,6 +127,7 @@ public final class Habit implements Model {
               ObjectsCompat.equals(getStartTime(), habit.getStartTime()) &&
               ObjectsCompat.equals(getEndTime(), habit.getEndTime()) &&
               ObjectsCompat.equals(getCreatedAt(), habit.getCreatedAt()) &&
+              ObjectsCompat.equals(getCompletedAt(), habit.getCompletedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), habit.getUpdatedAt());
       }
   }
@@ -136,6 +144,7 @@ public final class Habit implements Model {
       .append(getStartTime())
       .append(getEndTime())
       .append(getCreatedAt())
+      .append(getCompletedAt())
       .append(getUpdatedAt())
       .toString()
       .hashCode();
@@ -154,6 +163,7 @@ public final class Habit implements Model {
       .append("startTime=" + String.valueOf(getStartTime()) + ", ")
       .append("endTime=" + String.valueOf(getEndTime()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+      .append("completedAt=" + String.valueOf(getCompletedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
@@ -181,6 +191,7 @@ public final class Habit implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -194,7 +205,8 @@ public final class Habit implements Model {
       date,
       startTime,
       endTime,
-      createdAt);
+      createdAt,
+      completedAt);
   }
   public interface TitleStep {
     PriorityStep title(String title);
@@ -231,6 +243,7 @@ public final class Habit implements Model {
     BuildStep id(String id);
     BuildStep startTime(String startTime);
     BuildStep endTime(String endTime);
+    BuildStep completedAt(String completedAt);
   }
   
 
@@ -244,11 +257,12 @@ public final class Habit implements Model {
     private String createdAt;
     private String startTime;
     private String endTime;
+    private String completedAt;
     public Builder() {
       
     }
     
-    private Builder(String id, String title, String priority, String category, Boolean isCompleted, String date, String startTime, String endTime, String createdAt) {
+    private Builder(String id, String title, String priority, String category, Boolean isCompleted, String date, String startTime, String endTime, String createdAt, String completedAt) {
       this.id = id;
       this.title = title;
       this.priority = priority;
@@ -258,6 +272,7 @@ public final class Habit implements Model {
       this.startTime = startTime;
       this.endTime = endTime;
       this.createdAt = createdAt;
+      this.completedAt = completedAt;
     }
     
     @Override
@@ -273,7 +288,8 @@ public final class Habit implements Model {
           date,
           startTime,
           endTime,
-          createdAt);
+          createdAt,
+          completedAt);
     }
     
     @Override
@@ -330,6 +346,12 @@ public final class Habit implements Model {
         return this;
     }
     
+    @Override
+     public BuildStep completedAt(String completedAt) {
+        this.completedAt = completedAt;
+        return this;
+    }
+    
     /**
      * @param id id
      * @return Current Builder instance, for fluent method chaining
@@ -342,8 +364,8 @@ public final class Habit implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String priority, String category, Boolean isCompleted, String date, String startTime, String endTime, String createdAt) {
-      super(id, title, priority, category, isCompleted, date, startTime, endTime, createdAt);
+    private CopyOfBuilder(String id, String title, String priority, String category, Boolean isCompleted, String date, String startTime, String endTime, String createdAt, String completedAt) {
+      super(id, title, priority, category, isCompleted, date, startTime, endTime, createdAt, completedAt);
       Objects.requireNonNull(title);
       Objects.requireNonNull(priority);
       Objects.requireNonNull(category);
@@ -390,6 +412,11 @@ public final class Habit implements Model {
     @Override
      public CopyOfBuilder endTime(String endTime) {
       return (CopyOfBuilder) super.endTime(endTime);
+    }
+    
+    @Override
+     public CopyOfBuilder completedAt(String completedAt) {
+      return (CopyOfBuilder) super.completedAt(completedAt);
     }
   }
   

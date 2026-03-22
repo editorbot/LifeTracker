@@ -22,7 +22,8 @@ data class HabitEntity(
     val category: Category = Category.PERSONAL,
     val isCompleted: Boolean = false,
     val date: String = getCurrentDate(), // "2024-03-12"
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val completedAt: Long?= null
 )
 
 // Companion to get today's date consistently

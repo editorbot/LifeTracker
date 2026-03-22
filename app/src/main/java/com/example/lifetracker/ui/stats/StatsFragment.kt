@@ -98,7 +98,7 @@ class StatsFragment : Fragment() {
         // Productive hours — sum of (endTime - startTime) for completed habits
         val productiveMillis = habits
             .filter { it.isCompleted && it.startTime != null && it.endTime != null }
-            .sumOf { (it.endTime!! - it.startTime!!) }
+            .sumOf { (it.completedAt!! - it.startTime!!) }
 
         val hours = TimeUnit.MILLISECONDS.toHours(productiveMillis)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(productiveMillis) % 60

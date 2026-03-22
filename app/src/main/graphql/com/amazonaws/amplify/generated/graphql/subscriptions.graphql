@@ -14,6 +14,7 @@ subscription OnCreateHabit(
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
@@ -34,6 +35,7 @@ subscription OnUpdateHabit(
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
@@ -54,6 +56,7 @@ subscription OnDeleteHabit(
     startTime
     endTime
     createdAt
+    completedAt
     updatedAt
     owner
     __typename
